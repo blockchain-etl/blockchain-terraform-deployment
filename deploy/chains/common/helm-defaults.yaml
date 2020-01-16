@@ -1,0 +1,10 @@
+helmDefaults:
+  tillerNamespace: kube-system  #dedicated default key for tiller-namespace
+  tillerless: false                  #dedicated default key for tillerless
+  kubeContext: default          #dedicated default key for kube-context (--kube-context)
+  verify: false # verify fails with gcs storage
+  wait: true
+  timeout: 600
+  recreatePods: true
+  force: true
+  atomic: true

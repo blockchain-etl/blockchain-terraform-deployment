@@ -1,0 +1,101 @@
+templates:
+  _bitcoind: &_bitcoind
+    chart: baas-gke-dev/bitcoind
+    #may be dynamic from artifact
+    version: {{ env "version" | default "" }}
+    labels:
+      chart: bitcoind
+    missingFileHandler: Debug
+    kubeContext: {{ env "kube_context" | default ( printf "baas-gke-%s-baas0" .Environment.Name ) }}
+
+  bitcoind: &bitcoind
+    <<: *_bitcoind
+    labels:
+      chain: btc
+    values:
+      - ../common/values-bitcoind.yaml
+      - values-{{`{{ .Release.Name }}`}}.yaml
+      - values-{{`{{ .Release.Name }}`}}-custom.yaml
+
+  dogecoind: &dogecoind
+    <<: *_bitcoind
+    labels:
+      chain: doge
+    values:
+      - ../common/values-dogecoind.yaml
+      - values-{{`{{ .Release.Name }}`}}.yaml
+      - values-{{`{{ .Release.Name }}`}}-custom.yaml
+
+  bitcoin-cash: &bitcoin-cash
+    <<: *_bitcoind
+    labels:
+      chain: bch
+    values:
+      - ../common/values-bitcoin-cash.yaml
+      - values-{{`{{ .Release.Name }}`}}.yaml
+      - values-{{`{{ .Release.Name }}`}}-custom.yaml
+
+  dashd: &dashd
+    <<: *_bitcoind
+    labels:
+      chain: dash
+    values:
+      - ../common/values-dashd.yaml
+      - values-{{`{{ .Release.Name }}`}}.yaml
+      - values-{{`{{ .Release.Name }}`}}-custom.yaml
+
+  litecoind: &litecoind
+    <<: *_bitcoind
+    labels:
+      chain: ltc
+    values:
+      - ../common/values-litecoind.yaml
+      - values-{{`{{ .Release.Name }}`}}.yaml
+      - values-{{`{{ .Release.Name }}`}}-custom.yaml
+
+  zcashd: &zcashd
+    <<: *_bitcoind
+    labels:
+      chain: zec
+    values:
+      - ../common/values-zcashd.yaml
+      - values-{{`{{ .Release.Name }}`}}.yaml
+      - values-{{`{{ .Release.Name }}`}}-custom.yaml
+
+  _parity: &_parity
+    chart: baas-gke-dev/parity
+    #may be dynamic from artifact
+    version: {{ env "version" | default "" }}
+    labels:
+      chart: parity
+    missingFileHandler: Debug
+    kubeContext: {{ env "kube_context" | default ( printf "baas-gke-%s-baas0" .Environment.Name ) }}
+
+  parity: &parity
+    <<: *_parity
+    labels:
+      chain: eth
+    values:
+      - ../common/values-parity.yaml
+      - values-{{`{{ .Release.Name }}`}}.yaml
+      - values-{{`{{ .Release.Name }}`}}-custom.yaml
+
+  parity-etc: &parity-etc
+    <<: *_parity
+    labels:
+      chain: etc
+    values:
+      - ../common/values-parity.yaml
+      - ../common/values-parity-etc.yaml
+      - values-{{`{{ .Release.Name }}`}}.yaml
+      - values-{{`{{ .Release.Name }}`}}-custom.yaml
+
+  parity-keth: &parity-keth
+    <<: *_parity
+    labels:
+      chain: kovan
+    values:
+      - ../common/values-parity.yaml
+      - ../common/values-parity-kovan.yaml
+      - values-{{`{{ .Release.Name }}`}}.yaml
+      - values-{{`{{ .Release.Name }}`}}-custom.yaml

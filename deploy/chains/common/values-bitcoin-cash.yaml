@@ -1,0 +1,35 @@
+configurationFile:
+  rpcuser: "rpcuser"
+  rpcpassword: "rpcpassword"
+
+persistence:
+  enabled: true
+  storageClass: "ssd-regional-us-central1-bc"
+  size: "300Gi"
+
+image:
+  repository: blockchainetl/bitcoin-cashd
+  tag: 0.20.2
+  pullPolicy: IfNotPresent
+
+nameOverride: "bitcoin-cash"
+bitcoind:
+  chain: "bch"
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: "bitcoin-cash"
+          topologyKey: failure-domain.beta.kubernetes.io/zone
+
+resources:
+  requests:
+    cpu: "1000m"
+    memory: "2000Mi"
+  limits:
+    cpu: "2000m"
+    memory: "3000Mi"

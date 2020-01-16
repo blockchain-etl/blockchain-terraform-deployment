@@ -1,0 +1,28 @@
+image:
+  repository: parity/parity
+  tag: v2.5.12-stable
+  pullPolicy: IfNotPresent
+
+parity:
+  footprint:
+    cache_size_db: 8192
+    cache_size_blocks: 8192
+    cache_size_queue: 100
+    cache_size_state: 8192
+    cache_size: 20000
+  network:
+    min_peers: 250
+    max_peers: 300
+
+resources:
+  requests:
+    cpu: "2000m"
+    memory: "22000Mi"
+  limits:
+    cpu: "6500m"
+    memory: "30000Mi"
+
+persistence:
+  enabled: true
+  storageClass: "ssd-regional-us-central1-bc"
+  size: "4000Gi"

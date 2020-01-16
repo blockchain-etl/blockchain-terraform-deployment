@@ -1,0 +1,16 @@
+configurationFile:
+  rpcuser: "rpcuser"
+  rpcpassword: "rpcpassword"
+
+persistence:
+  enabled: true
+  storageClass: "ssd-regional-us-central1-bc"
+  size: "400Gi"
+
+resources:
+  requests:
+    cpu: "1000m"
+    memory: "2000Mi"
+  limits:
+    cpu: "2000m"
+    memory: "3000Mi"

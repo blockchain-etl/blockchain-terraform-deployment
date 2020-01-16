@@ -1,0 +1,4 @@
+repositories:
+  # helm-gcs powered repository:
+  - name: baas-gke-dev
+    url: gs://artifacts-/charts/
