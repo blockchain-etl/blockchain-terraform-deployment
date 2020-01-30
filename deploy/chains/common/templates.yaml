@@ -1,6 +1,6 @@
 templates:
   _bitcoind: &_bitcoind
-    chart: baas-gke-dev/bitcoind
+    chart: blockchain-k8s/bitcoind
     #may be dynamic from artifact
     version: {{ env "version" | default "" }}
     labels:
@@ -63,7 +63,7 @@ templates:
       - values-{{`{{ .Release.Name }}`}}-custom.yaml
 
   _parity: &_parity
-    chart: baas-gke-dev/parity
+    chart: blockchain-k8s/parity
     #may be dynamic from artifact
     version: {{ env "version" | default "" }}
     labels:

@@ -1,4 +1,4 @@
 repositories:
   # helm-gcs powered repository:
-  - name: baas-gke-dev
-    url: gs://artifacts-/charts/
+  - name: blockchain-k8s
+    url: gs://blockchain-k8s/charts/
