@@ -1,0 +1,44 @@
+configurationFile:
+  rpcuser: "rpcuser"
+  rpcpassword: "rpcpassword"
+
+persistence:
+  enabled: true
+  storageClass: "standard-regional-us-central1-bc"
+#  Disk size can not be smaller than 200 GB for regional disks
+  size: "200Gi"
+
+image:
+  repository: blockchainetl/dogecoind
+  tag: 1.14.2
+  pullPolicy: IfNotPresent
+
+nameOverride: "dogecoind"
+
+bitcoind:
+  base_path: /home/dogecoin
+  configurationFileName: "dogecoin.conf"
+  cli_binary: "dogecoin-cli"
+  chain: "doge"
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: "dogecoind"
+          topologyKey: failure-domain.beta.kubernetes.io/zone
+
+service:
+  rpcPort: 22555
+  p2pPort: 22556
+
+resources:
+  requests:
+    cpu: "1000m"
+    memory: "2000Mi"
+  limits:
+    cpu: "2000m"
+    memory: "3000Mi"

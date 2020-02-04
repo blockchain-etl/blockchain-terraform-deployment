@@ -1,0 +1,43 @@
+configurationFile:
+  rpcuser: "rpcuser"
+  rpcpassword: "rpcpassword"
+
+persistence:
+  enabled: true
+  storageClass: "standard-regional-us-central1-bc"
+#  Disk size can not be smaller than 200 GB for regional disks
+  size: "200Gi"
+
+image:
+  repository: blockchainetl/litecoind
+  tag: 0.17.1
+  pullPolicy: IfNotPresent
+
+nameOverride: "litecoind"
+
+bitcoind:
+  configurationFileName: "litecoin.conf"
+  cli_binary: "litecoin-cli"
+  chain: "ltc"
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: "litecoind"
+          topologyKey: failure-domain.beta.kubernetes.io/zone
+
+service:
+  rpcPort: 9332
+  p2pPort: 9333
+
+resources:
+  requests:
+    cpu: "1000m"
+    memory: "2000Mi"
+  limits:
+    cpu: "2000m"
+    memory: "3000Mi"

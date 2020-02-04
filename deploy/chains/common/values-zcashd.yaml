@@ -1,0 +1,47 @@
+configurationFile:
+  rpcuser: "rpcuser"
+  rpcpassword: "rpcpassword"
+
+persistence:
+  enabled: true
+  storageClass: "standard-regional-us-central1-bc"
+#  Disk size can not be smaller than 200 GB for regional disks
+  size: "200Gi"
+
+image:
+  repository: blockchainetl/zcashd
+  tag: 2.1.0
+  pullPolicy: IfNotPresent
+
+nameOverride: "zcashd"
+
+bitcoind:
+  # do not change base_path with zcash
+  base_path: /home/zcash
+  configurationFileName: "zcash.conf"
+  cli_binary: "zcash-cli"
+  chain: "zec"
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: "zcashd"
+          topologyKey: failure-domain.beta.kubernetes.io/zone
+
+zcash_fetch_params: true
+
+service:
+  rpcPort: 8232
+  p2pPort: 8233
+
+resources:
+  requests:
+    cpu: "1000m"
+    memory: "2000Mi"
+  limits:
+    cpu: "2000m"
+    memory: "3000Mi"

@@ -1,0 +1,25 @@
+{{- tpl (readFile "../common/repositories.yaml") . | nindent 0 }}
+
+{{- tpl (readFile "../common/helm-defaults.yaml") . | nindent 0 }}
+
+environments:
+  staging:
+
+{{- tpl (readFile "../common/templates.yaml") . | nindent 0 }}
+
+releases:
+- name: staging-btc-0
+  namespace: staging-btc-0
+  <<: *bitcoind
+
+- name: staging-btc-1
+  namespace: staging-btc-1
+  <<: *bitcoind
+
+- name: staging-eth-0
+  namespace: staging-eth-0
+  <<: *parity
+
+- name: staging-eth-1
+  namespace: staging-eth-1
+  <<: *parity

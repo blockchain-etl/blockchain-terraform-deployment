@@ -1,0 +1,15 @@
+parity:
+  chain: classic
+persistence:
+  size: "600Gi"
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: "parity"
+              parity/chain: "classic"
+          topologyKey: failure-domain.beta.kubernetes.io/zone
