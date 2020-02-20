@@ -15,7 +15,7 @@ Here are some variable descriptions:
     Adjust this value according to your load. 
 * `GKE_MASTER_AUTHORIZED_NETWORKS` - IP whitelist to [access GKE master](https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks) on network level.
     Add your IP addresses to this whitelist
-* `GKE_NODE_IMAGE_TYPE` - [GKE node image](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images) - operating system image to run on each node
+* `GKE_NODE_IMAGE_TYPE` - [GKE node image](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images) - operating system image to run on each GKE node
 
 When you changed all the variables you need, it's time to apply these changes to the infrastructure. Get the list of proposed changes:
  ```bash
@@ -33,7 +33,14 @@ terragrunt apply -auto-approve
 We assume work is performed in the dedicated demo environment where data loss is acceptable. Do **not** use these instructions in 
 a shared environment or production GKE cluster!  
 #### GCP services/GKE provision issues
+You need "Owner" permissions in your demo project to proceed w/o permission issues.
+Check machine types [zone support]((https://cloud.google.com/compute/docs/regions-zones#available) when you hit issues while creating GKE node pool. Terragrunt output may be helpful too.
 #### provision basic in-k8s such as helm via terragrunt
+Some values of `in-k8s/terragrunt.hcl` must be the same as `infra/terragrunt.hcl`
+```
+K8S_CONTEXT -> K8S_CONTEXT
+GKE_NODE_LOCATIONS -> K8S_REGIONAL_DISK_LOCATIONS 
+``` 
 #### Cryptonodes deploy issues
 Here is the list of docs that may be helpful:
 * [helmfile](https://github.com/roboll/helmfile)
@@ -44,10 +51,16 @@ In case you hit a problem - some starting points are `kubectl get` and `kubectl 
 kubectl --context $KUBE_CONTEXT get namespaces
 kubectl --context $KUBE_CONTEXT --namespace demo-btc-1 get pod
 kubectl --context $KUBE_CONTEXT --namespace demo-btc-1 describe pod demo-btc1-bitcoind-0
+kubectl --context $KUBE_CONTEXT --namespace demo-btc-1 get svc
+kubectl --context $KUBE_CONTEXT --namespace demo-btc-1 describe svc demo-btc1-service
 kubectl --context $KUBE_CONTEXT --namespace demo-btc-1 get pvc
 kubectl --context $KUBE_CONTEXT --namespace demo-btc-1 describe pvc bitcoind-pvc-demo-btc1-bitcoind-0
 ``` 
 `describe` messages help to understand the source of the issue usually.
+
+Common issues are lack of resource quotas such as IPs and SSD quota. You should see corresponding messages in `kubectl ... describe ...` commands above. 
+Visit [GCP console](https://console.cloud.google.com/iam-admin/quotas) to send quota increase request in this case. Another possible option is resource decrease.
+See [readme](README.md#deploy-cryptonodes-via-helmfile) to decrease disk resources f.e.
 
 Sometimes you may want to remove all cryptonodes with all the data and start from clean cluster. Use these commands to cleanup  
 ```bash
@@ -80,6 +93,11 @@ helmfile -e demo -l name=demo-btc-1 sync
 Check logs via
 ```bash
 kubectl --context $KUBE_CONTEXT -n demo-btc-1 logs --since=15s --tail=10 demo-btc-1-bitcoind-0
+```
+Restart cryptonode via pod delete. Pod will be recreated by [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
+```bash
+kubectl --context $KUBE_CONTEXT -n demo-btc-1 get pod
+kubectl --context $KUBE_CONTEXT -n demo-btc-1 delete pod demo-btc-1-bitcoind-0
 ```
 And remove this particular node
 ```bash

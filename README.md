@@ -124,6 +124,7 @@ Run shell snippet to add disk limit to all required files:
 ```bash
 cd "$PROJECT_ROOT/deploy/chains/demo"
 for FILENAME in values-*.yaml;do
+[[ $FILENAME =~ custom.yaml$ ]] && continue
 CUSTOM_FILENAME=$(basename $FILENAME .yaml)-custom.yaml
 cat << 'EOF' >> $CUSTOM_FILENAME
 persistence:
