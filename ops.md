@@ -34,13 +34,16 @@ We assume work is performed in the dedicated demo environment where data loss is
 a shared environment or production GKE cluster!  
 #### GCP services/GKE provision issues
 You need "Owner" permissions in your demo project to proceed w/o permission issues.
-Check machine types [zone support]((https://cloud.google.com/compute/docs/regions-zones#available) when you hit issues while creating GKE node pool. Terragrunt output may be helpful too.
+
+If you hit issues while creating GKE node pool - check machine types [zone support]((https://cloud.google.com/compute/docs/regions-zones#available).
+Terragrunt output may be helpful too.
 #### provision basic in-k8s such as helm via terragrunt
 Some values of `in-k8s/terragrunt.hcl` must be the same as `infra/terragrunt.hcl`
 ```
 K8S_CONTEXT -> K8S_CONTEXT
 GKE_NODE_LOCATIONS -> K8S_REGIONAL_DISK_LOCATIONS 
 ``` 
+But pay attention, `K8S_REGIONAL_DISK_LOCATIONS` cannot hold more than 2 zones.
 #### Cryptonodes deploy issues
 Here is the list of docs that may be helpful:
 * [helmfile](https://github.com/roboll/helmfile)
@@ -60,9 +63,9 @@ kubectl --context $KUBE_CONTEXT --namespace demo-btc-1 describe pvc bitcoind-pvc
 
 Common issues are lack of resource quotas such as IPs and SSD quota. You should see corresponding messages in `kubectl ... describe ...` commands above. 
 Visit [GCP console](https://console.cloud.google.com/iam-admin/quotas) to send quota increase request in this case. Another possible option is resource decrease.
-See [readme](README.md#deploy-cryptonodes-via-helmfile) to decrease disk resources f.e.
+See [readme](README.md#deploy-cryptonodes-via-helmfile) to decrease f.e. disk resources.
 
-Sometimes you may want to remove all cryptonodes with all the data and start from clean cluster. Use these commands to cleanup  
+Sometimes you may want to remove all cryptonodes with all the data and start from clean k8s cluster. Use these commands to cleanup  
 ```bash
 cd "$PROJECT_ROOT/deploy/chains"
 helmfile -e demo destroy
@@ -113,8 +116,8 @@ In case you need to remove stored cryptonode data - use following command
 kubectl --context $KUBE_CONTEXT -n demo-btc-1 delete pvc -l app.kubernetes.io/instance=demo-btc-1
 ```
 
-You may hit some stale resources errors like 
+You may hit some stale resources errors in case of destroy and re-install : 
 ```bash
 Error: release demo-btc-1 failed: object is being deleted: services "demo-btc-1-lb-p2p" already exists
 ```
-in case of destroy and re-install. You should wait a couple minutes after destroy in this case. 
+You should wait a couple minutes after destroy in this case. 

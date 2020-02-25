@@ -3,7 +3,7 @@ Howto deploy full env from scratch. We assume new `demo` env in this manual.
 ## Client Software Requirements:
 * MacOS or Linux. Windows supports all the tools but is out of scope of this manual
 * git
-* [terraform](https://www.terraform.io/downloads.html)
+* [terraform](https://www.terraform.io/downloads.html) 0.12
 * [terragrunt](https://github.com/gruntwork-io/terragrunt#install-terragrunt)
 * [gcloud](https://cloud.google.com/sdk/install) 
 * kubectl (version from gcloud is ok)
@@ -212,7 +212,7 @@ kubectl --context $KUBE_CONTEXT top pod -A
 
 Check [this manual](ops.md) for various operations, such as single cryptonode deploy, basic changes, troubleshooting etc.
 ### Teardown
-Remove helm releases with:
+* Remove helm releases with:
 ```bash
 cd "$PROJECT_ROOT/deploy/chains"
 helmfile -e demo destroy
