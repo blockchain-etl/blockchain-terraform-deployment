@@ -3,5 +3,7 @@
 {{- tpl (readFile "common/helm-defaults.yaml") . | nindent 0 }}
 environments:
   staging:
+  replaceme:
 helmfiles:
   - staging/helmfile.yaml
+  - replaceme/helmfile.yaml
