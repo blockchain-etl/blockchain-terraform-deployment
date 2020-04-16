@@ -10,7 +10,7 @@ persistence:
 
 image:
   repository: blockchainetl/zcashd
-  tag: 2.1.0
+  tag: 2.1.1-1
   pullPolicy: IfNotPresent
 
 nameOverride: "zcashd"
@@ -40,7 +40,7 @@ service:
 
 resources:
   requests:
-    cpu: "1000m"
+    cpu: "400m"
     memory: "2000Mi"
   limits:
     cpu: "2000m"

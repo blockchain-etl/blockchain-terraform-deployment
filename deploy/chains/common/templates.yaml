@@ -6,7 +6,7 @@ templates:
     labels:
       chart: bitcoind
     missingFileHandler: Debug
-    kubeContext: {{ env "kube_context" | default ( printf "baas-gke-%s-baas0" .Environment.Name ) }}
+    kubeContext: {{ env "KUBE_CONTEXT" | default ( printf "baas-gke-%s-baas0" .Environment.Name ) }}
 
   bitcoind: &bitcoind
     <<: *_bitcoind
@@ -69,7 +69,7 @@ templates:
     labels:
       chart: parity
     missingFileHandler: Debug
-    kubeContext: {{ env "kube_context" | default ( printf "baas-gke-%s-baas0" .Environment.Name ) }}
+    kubeContext: {{ env "KUBE_CONTEXT" | default ( printf "baas-gke-%s-baas0" .Environment.Name ) }}
 
   parity: &parity
     <<: *_parity

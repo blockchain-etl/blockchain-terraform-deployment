@@ -1,6 +1,6 @@
 image:
   repository: parity/parity
-  tag: v2.5.12-stable
+  tag: v2.7.2-stable
   pullPolicy: IfNotPresent
 
 parity:
@@ -11,8 +11,8 @@ parity:
     cache_size_state: 8192
     cache_size: 20000
   network:
-    min_peers: 250
-    max_peers: 300
+    min_peers: 10
+    max_peers: 15
 
 resources:
   requests:
