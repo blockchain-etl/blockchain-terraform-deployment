@@ -8,7 +8,7 @@ Howto deploy full env from scratch. We assume new `demo` env in this manual.
 * [gcloud](https://cloud.google.com/sdk/install) 
 * kubectl (version from gcloud is ok)
 * [helm](https://helm.sh/docs/using_helm/#installing-helm), version 2.x, version 3 isn't supported now. Check `helm version -c`
-* [helmfile](https://github.com/roboll/helmfile#installation) 
+* [helmfile](https://github.com/helmfile/helmfile#installation) 
 * [helm-gcs](https://github.com/hayorov/helm-gcs#installation) plugin
 * Please follow "Before you begin" part of [GCP manual](https://cloud.google.com/kubernetes-engine/docs/how-to/iam) (gcloud configuration)
 
