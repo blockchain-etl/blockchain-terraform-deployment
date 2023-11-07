@@ -1,7 +1,7 @@
-Here is basic HOWTO use [helmfile](https://github.com/roboll/helmfile) 
+Here is basic HOWTO use [helmfile](https://github.com/helmfile/helmfile) 
 
 Requirements:
-* [install](https://github.com/roboll/helmfile#installation) helmfile
+* [install](https://github.com/helmfile/helmfile#installation) helmfile
 * configure GKE context, if not present
 * Add [helm-gcs](https://github.com/hayorov/helm-gcs#installation) plugin
 * install tiller(helm agent) into GKE cluster, if not present
